@@ -15,9 +15,7 @@ const render = require("./lib/htmlRenderer");
 const inquirer = require("inquirer");
 // and to create objects for each team member (using the correct classes as blueprints!)
 const employees = [];
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
+
 const managerInfo = async() => {
     await inquirer.prompt([{
             type: 'input',
@@ -140,12 +138,15 @@ const addRole = () => {
         if (response.addMore) {
             whatRole();
         } else {
-            console.log("Have a great rest of your day!");
+            console.log("Thank you! Have a lovely day!");
             buildTeam();
         };
     });
 };
 //==================================================//
+// After the user has input all employees desired, call the `render` function (required
+// above) and pass in an array containing all employee objects; the `render` function will
+// generate and return a block of HTML including templated divs for each employee!
 buildTeam = () => {
     if (!fs.existsSync(OUTPUT_DIR)) {
         fs.mkdirSync(OUTPUT_DIR)
