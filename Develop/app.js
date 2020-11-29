@@ -14,10 +14,146 @@ const render = require("./lib/htmlRenderer");
 // Write code to use inquirer to gather information about the development team members,
 const inquirer = require("inquirer");
 // and to create objects for each team member (using the correct classes as blueprints!)
-
+const employees = [];
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
+const managerInfo = async() => {
+    await inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: "What is the manager's name?"
+        },
+        {
+            type: 'input',
+            name: 'id',
+            message: 'What is the manager`s ID?'
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'What is the manager`s email address?'
+        },
+        {
+            type: 'input',
+            name: 'officeNumber',
+            message: 'What is the manager`s office number?'
+        }
+    ]).then(response => {
+        const manager = new Manager(response.name, response.id, response.email, response.officeNumber);
+        employees.push(manager);
+        return manager;
+    });
+    addRole();
+};
+
+//==============================================//
+const engineerInfo = async() => {
+    await inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: "What is the engineer's name?"
+        },
+        {
+            type: 'input',
+            name: 'id',
+            message: "What is the engineer's ID?"
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: "What is the engineer's email address?"
+        },
+        {
+            type: 'input',
+            name: 'github',
+            message: "What is the engineer's GitHub username?"
+        }
+    ]).then(response => {
+        const engineer = new Engineer(response.name, response.id, response.email, response.github);
+        employees.push(engineer);
+        return engineer;
+    });
+    addRole();
+};
+//============================================//
+const internInfo = async() => {
+    await inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: "What is the intern's name?"
+        },
+        {
+            type: 'input',
+            name: 'id',
+            message: "What is the intern's ID?"
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: "What is the intern's email address?"
+        },
+        {
+            type: 'input',
+            name: 'school',
+            message: "What school did the intern attend?"
+        }
+    ]).then(response => {
+        const intern = new Intern(response.name, response.id, response.email, response.school);
+        employees.push(intern);
+        return intern;
+    });
+    addRole();
+};
+
+//===========================================//
+const whatRole = () => {
+    inquirer.prompt([{
+        type: 'list',
+        name: 'role',
+        message: "Which employee role would you like to input?",
+        choices: ['Manager', 'Engineer', 'Intern']
+    }]).then(response => {
+        switch (response.role) {
+            case 'Manager':
+                managerInfo();
+                break;
+            case 'Engineer':
+                engineerInfo();
+                break;
+            case 'Intern':
+                internInfo();
+                break;
+            default:
+                return;
+        };
+    });
+};
+
+//===============================================//
+const addRole = () => {
+    inquirer.prompt([{
+        type: 'confirm',
+        name: 'addMore',
+        message: "Would you like to add another employee?"
+    }]).then(response => {
+        if (response.addMore) {
+            whatRole();
+        } else {
+            console.log("Have a great rest of your day!");
+            buildTeam();
+        };
+    });
+};
+//==================================================//
+buildTeam = () => {
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+    fs.writeFileSync(outputPath, render(employees), 'UTF-8')
+}
+
+whatRole();
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
