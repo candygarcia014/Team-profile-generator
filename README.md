@@ -40,4 +40,4 @@ To run tests, you need to run the following command: npm i and node app.js
 # Questions
 If you have any questions about the repo, or would like to collaborate, please contact candygarcia014 directly to: candygarcia014@gmail.com
 
-![Screenshot of app](./Assets/teamdatabase.png)
+![Screenshot of app](https://raw.githubusercontent.com/candygarcia014/Team-profile-generator/main/Assets/teamdatabase.PNG)
